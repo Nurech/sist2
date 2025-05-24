@@ -33,7 +33,15 @@
                     <FeaturedFieldsLine :doc="doc"></FeaturedFieldsLine>
                 </div>
 
-                <!-- Tags -->
+              <!-- Copy filename button -->
+              <div style="display: flex; align-items: center; margin-top: 0.5rem;">
+                <b-button size="sm" variant="outline-primary" @click.stop="copyFilename(doc._source.filename)">
+                  Copy Filename
+                </b-button>
+              </div>
+
+
+              <!-- Tags -->
                 <div class="card-text">
                     <TagContainer :hit="doc"></TagContainer>
                 </div>
@@ -75,7 +83,12 @@ export default {
         onInfoClick() {
             this.showInfo = true;
         },
-        onEmbeddingClick() {
+      copyFilename(filename) {
+        navigator.clipboard.writeText(filename).then(() => {
+          console.log("Filename copied:", filename);
+        });
+      },
+      onEmbeddingClick() {
             Sist2Api.getEmbeddings(sid(this.doc), this.$store.state.embeddingsModel).then(embeddings => {
                 this.$store.commit("setEmbeddingText", "");
                 this.$store.commit("setEmbedding", embeddings);
